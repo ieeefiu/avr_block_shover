@@ -6,6 +6,10 @@
 
 void menu(void);
 
+enum colors {NONE, RED, GREEN, YELLOW, BLUE} color;
+
+void shove(uint8_t col);
+
 volatile uint8_t received;
 
 int main(void)
@@ -20,9 +24,10 @@ int main(void)
 				"| By William Oberndorfer |\n"
 				"|------------------------|\n\n");
 
-	menu();
 	
 	while(1) {
+		shove(color);
+		menu();
 		sleep_mode();
 	}
 }
@@ -32,25 +37,23 @@ ISR(USART_RX_vect)
 	received = UDR0;
 	switch(received) {
 	case 0x31:
-		printString("Shove Red\n");
+		color = RED;
 		break;
 	case 0x32:
-		printString("Shove Green\n");
+		color = GREEN;
 		break;
 	case 0x33:
-		printString("Shove Yellow\n");
+		color = YELLOW;
 		break;
 	case 0x34:
-		printString("Shove Blue\n");
+		color = BLUE;
 		break;
 	case 0x30:
-		printString("Display colors\n");
+		color = NONE;
 		break;
 	default:
-		printString("Invalid input\n");
 		break;
 	}
-	menu();
 }
 
 void menu(void)
@@ -62,4 +65,31 @@ void menu(void)
 					"3. Shove Yellow\n"
 					"4. Shove Blue\n\n"
 					"0. Display colors\n");
+}
+
+void shove(uint8_t col)
+{
+	switch(col) {
+	case RED:
+		printString("shove red\n");
+		break;
+	case GREEN:
+		printString("shove green\n");
+		break;
+	case YELLOW:
+		printString("shove yellow\n");
+		break;
+	case BLUE:
+		printString("shove blue\n");
+		break;
+	default:
+		color = NONE;
+		break;
+	}
+
+	switch(col) {
+	default:
+		color = NONE;
+		break;
+	}
 }
