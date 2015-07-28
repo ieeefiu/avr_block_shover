@@ -22,6 +22,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 #include "i2c_master.h"
 #include "USART.h"
@@ -65,7 +66,7 @@ int main(void)
 				"| -----------------------|\n");
 	i2c_init();
 	mux_init();
-
+	sei();
 	printString("Initializing sensors\n"
 				"--------------------\n");
 	for (i = 0; i < SENSOR_NUMBER; i++) {
@@ -87,6 +88,13 @@ int main(void)
 	}
 
 	return 0;
+}
+
+ISR(USART_RXC_vect)
+{
+	char received;
+	received = receiveByte();
+	printString("bloof");
 }
 
 void mux_init(void)
