@@ -1,3 +1,25 @@
+/* Block Shover 5000
+ * 
+ * A silly little program for the ATmega328p for switching channels on an
+ * i2c multiplexer for the purpose of reading from multiple i2c color
+ * sensors with the same address.
+ *
+ * Near-future goal: identify colors on blocks
+ * Eventual goal: use color data to operate servos to shove blocks
+ *
+ * The Players:
+ * PCA9547 - An eight-channel i2c multiplexer
+ * Two (2) TCS34725 - i2c color sensor
+ * ATmega328p - A microcontroller
+ *
+ * Uses the i2c master library from github user devthrash
+ * https://github.com/devthrash/I2C-master-lib
+ *
+ * Uses the USART library for serial communication by Elliot Williams
+ * https://github.com/hexagon5un/AVR-Programming/
+ *
+ */
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
