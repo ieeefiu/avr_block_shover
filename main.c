@@ -97,7 +97,7 @@ ISR(USART_RX_vect)
 
 void menu(void)
 {
-		printString("Awaiting input. Valid inputs are numbers 1-4, which\n"
+		printString("\nAwaiting input. Valid inputs are numbers 1-4, which\n"
 					"correspond to the following commands:\n\n"
 					"1. Shove Red\n"
 					"2. Shove Green\n"
