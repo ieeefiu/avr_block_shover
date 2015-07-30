@@ -39,7 +39,7 @@ void menu(void);
 
 enum colors {NONE, RED, GREEN, YELLOW, BLUE} color;
 
-void shove(uint8_t col, uint16_t* values);
+void shove(uint8_t col, uint8_t* values);
 
 volatile uint8_t received;
 
@@ -120,7 +120,7 @@ int main(void)
 		}
 		// boy that sure was some dumb bullshit
 		
-		shove(color, values);
+		shove(color, sensors);
 	}
 }
 
@@ -156,7 +156,7 @@ void menu(void)
 					"4. Shove Blue\n\n");
 }
 
-void shove(uint8_t col, uint16_t* values)
+void shove(uint8_t col, uint8_t* sensors)
 {
 	switch(col) {
 	case RED:
