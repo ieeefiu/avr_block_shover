@@ -25,10 +25,11 @@
 #include <avr/sleep.h>
 
 #include "USART.h"
+#include "blockshover.h"
 
 void menu(void);
 
-enum colors {NONE, RED, GREEN, YELLOW, BLUE} color;
+enum menuitems {DISPLAY, RED, GREEN, YELLOW, BLUE} selection;
 
 void shove(uint8_t col);
 
@@ -36,6 +37,8 @@ volatile uint8_t received;
 
 int main(void)
 {
+	uint8_t i;
+	uint16_t values[SENSOR_NUMBER][4];
 	initUSART();
 	UCSR0B |= (1 << RXCIE0);
 	sei(); // enable interrupts
@@ -45,10 +48,21 @@ int main(void)
 				"| Block Shover 5000      |\n"
 				"| By William Oberndorfer |\n"
 				"|------------------------|\n\n");
+	i2c_init();
+	mux_init();
 
+	printString("Initializing sensors\n"
+				"--------------------\n");
+	for (i = 0; i < SENSOR_NUMBER; i++) {
+		mux_select(i);
+		sensor_init();
+	}
+	printString("~All sensors initialized~\n\n");
+
+	mux_select(0);
 	
 	while(1) {
-		shove(color);
+		shove(selection);
 		menu();
 		sleep_mode();
 	}
@@ -59,19 +73,19 @@ ISR(USART_RX_vect)
 	received = UDR0;
 	switch(received) {
 	case 0x31:
-		color = RED;
+		selection = RED;
 		break;
 	case 0x32:
-		color = GREEN;
+		selection = GREEN;
 		break;
 	case 0x33:
-		color = YELLOW;
+		selection = YELLOW;
 		break;
 	case 0x34:
-		color = BLUE;
+		selection = BLUE;
 		break;
 	case 0x30:
-		color = NONE;
+		selection = DISPLAY;
 		break;
 	default:
 		break;
@@ -89,7 +103,7 @@ void menu(void)
 					"0. Display colors\n");
 }
 
-void shove(uint8_t col)
+void shove(uint8_t col, uint16_t* val)
 {
 	switch(col) {
 	case RED:
@@ -104,8 +118,7 @@ void shove(uint8_t col)
 	case BLUE:
 		printString("shove blue\n");
 		break;
-	default:
-		color = NONE;
+	case DISPLAY:
 		break;
 	}
 
