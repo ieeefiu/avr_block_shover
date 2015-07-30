@@ -103,7 +103,7 @@ void menu(void)
 					"2. Shove Green\n"
 					"3. Shove Yellow\n"
 					"4. Shove Blue\n\n"
-					"0. Display colors\n");
+					"0. Display colors\n\n");
 }
 
 void shove(uint8_t col, uint16_t* val)
