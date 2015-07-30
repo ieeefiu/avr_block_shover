@@ -68,7 +68,7 @@ int main(void)
 			sensor_get(i, values);
 			sensor_printvalues(values);
 		}
-		shove(received);
+		shove(selection);
 	}
 }
 
