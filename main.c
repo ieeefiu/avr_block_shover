@@ -31,7 +31,7 @@ void menu(void);
 
 enum menuitems {DISPLAY, RED, GREEN, YELLOW, BLUE} selection;
 
-void shove(uint8_t col, uint16_t* val);
+void shove(uint8_t col);
 
 volatile uint8_t received;
 
@@ -68,6 +68,7 @@ int main(void)
 			sensor_get(i, values);
 			sensor_printvalues(values);
 		}
+		shove(received);
 	}
 }
 
@@ -106,7 +107,7 @@ void menu(void)
 					"0. Display colors\n\n");
 }
 
-void shove(uint8_t col, uint16_t* val)
+void shove(uint8_t col)
 {
 	switch(col) {
 	case RED:
