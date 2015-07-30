@@ -45,25 +45,26 @@ void sensor_init(void)
 	printString("Sensor initialized\n");
 }
 
-void sensor_printvalues(uint16_t* val)
+void sensor_printvalues(uint16_t* values)
 {
 	printString("C: ");
-	printWord(val[0]);
+	printWord(values[0]);
 	printString("    ");
 	printString("R: ");
-	printWord(val[1]);
+	printWord(values[1]);
 	printString("    ");
 	printString("G: ");
-	printWord(val[2]);
+	printWord(values[2]);
 	printString("    ");
 	printString("B: ");
-	printWord(val[3]);
+	printWord(values[3]);
 	printString("\n");
 }
 
-void sensor_get(uint16_t* values)
+void sensor_get(uint8_t channel, uint16_t* values)
 {
 	uint8_t i;
+	mux_select(channel);
 	i2c_start(SENSOR_READ);
 	for(i = 0; i < 4; i++) {
 		if (i < 3) {

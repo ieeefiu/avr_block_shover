@@ -28,9 +28,9 @@ uint8_t mux_get(void);
 void sensor_init(void);
 
 // prints the values given to it
-void sensor_printvalues(uint16_t* val);
+void sensor_printvalues(uint16_t* values);
 
 // populates the values array with crgb data
-void sensor_get(uint16_t* values);
+void sensor_get(uint8_t channel, uint16_t* values);
 
 #endif

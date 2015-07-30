@@ -31,14 +31,14 @@ void menu(void);
 
 enum menuitems {DISPLAY, RED, GREEN, YELLOW, BLUE} selection;
 
-void shove(uint8_t col);
+void shove(uint8_t col, uint16_t* val);
 
 volatile uint8_t received;
 
 int main(void)
 {
 	uint8_t i;
-	uint16_t values[SENSOR_NUMBER][4];
+	uint16_t values[4];
 	initUSART();
 	UCSR0B |= (1 << RXCIE0);
 	sei(); // enable interrupts
@@ -62,9 +62,12 @@ int main(void)
 	mux_select(0);
 	
 	while(1) {
-		shove(selection);
 		menu();
 		sleep_mode();
+		for(i = 0; i < SENSOR_NUMBER; i++) {
+			sensor_get(i, values);
+			sensor_printvalues(values);
+		}
 	}
 }
 
@@ -119,12 +122,6 @@ void shove(uint8_t col, uint16_t* val)
 		printString("shove blue\n");
 		break;
 	case DISPLAY:
-		break;
-	}
-
-	switch(col) {
-	default:
-		color = RED;
 		break;
 	}
 }
