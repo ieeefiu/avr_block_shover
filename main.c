@@ -28,18 +28,28 @@
 #include "i2c_master.h"
 #include "blockshover.h"
 
+// for test purposes only
+#define GREEN_0 PB3
+#define RED_0 PB2
+#define GREEN_1 PB1
+#define RED_1 PB0
+//
+
 void menu(void);
 
-enum menuitems {DISPLAY, RED, GREEN, YELLOW, BLUE} selection;
+enum colors {NONE, RED, GREEN, YELLOW, BLUE} color;
 
-void shove(uint8_t col);
+void shove(uint8_t col, uint16_t* values);
 
 volatile uint8_t received;
 
 int main(void)
 {
+	DDRB |= 0xFF;
+	
 	uint8_t i;
 	uint16_t values[4];
+	uint8_t sensors[SENSOR_NUMBER];
 	initUSART();
 	UCSR0B |= (1 << RXCIE0);
 	sei(); // enable interrupts
@@ -68,8 +78,49 @@ int main(void)
 		for(i = 0; i < SENSOR_NUMBER; i++) {
 			sensor_get(i, values);
 			sensor_printvalues(values);
+			
+			// for testing purposes only
+			if(values[0] > 5000) {
+				if(values[1] > values[3]) {
+					sensors[i] = RED;
+				}
+				else if(values[1] < values[3]) {
+					sensors[i] = GREEN;
+				}
+			}
+			else sensors[i] = NONE;
+			//
 		}
-		shove(selection);
+
+		// part of that same dumb test
+		if(sensors[0] == GREEN) {
+			PORTB |= (1 << GREEN_0);
+			PORTB &= ~(1 << RED_0);
+		}
+		else if(sensors[0] == RED) {
+			PORTB |= (1 << RED_0);
+			PORTB &= ~(1 << GREEN_0);
+		}
+		else {
+			PORTB &= ~(1 << GREEN_0);
+			PORTB &= ~(1 << RED_0);
+		}
+		
+		if(sensors[1] == GREEN) {
+			PORTB |= (1 << GREEN_1);
+			PORTB &= ~(1 << RED_1);
+		}
+		else if(sensors[1] == RED) {
+			PORTB |= (1 << RED_1);
+			PORTB &= ~(1 << GREEN_1);
+		}
+		else {
+			PORTB &= ~(1 << GREEN_1);
+			PORTB &= ~(1 << RED_1);
+		}
+		// boy that sure was some dumb bullshit
+		
+		shove(color, values);
 	}
 }
 
@@ -78,21 +129,19 @@ ISR(USART_RX_vect)
 	received = UDR0;
 	switch(received) {
 	case 0x31:
-		selection = RED;
+		color = RED;
 		break;
 	case 0x32:
-		selection = GREEN;
+		color = GREEN;
 		break;
 	case 0x33:
-		selection = YELLOW;
+		color = YELLOW;
 		break;
 	case 0x34:
-		selection = BLUE;
-		break;
-	case 0x30:
-		selection = DISPLAY;
+		color = BLUE;
 		break;
 	default:
+		color = NONE;
 		break;
 	}
 }
@@ -104,11 +153,10 @@ void menu(void)
 					"1. Shove Red\n"
 					"2. Shove Green\n"
 					"3. Shove Yellow\n"
-					"4. Shove Blue\n\n"
-					"0. Display colors\n\n");
+					"4. Shove Blue\n\n");
 }
 
-void shove(uint8_t col)
+void shove(uint8_t col, uint16_t* values)
 {
 	switch(col) {
 	case RED:
@@ -123,7 +171,7 @@ void shove(uint8_t col)
 	case BLUE:
 		printString("shove blue\n");
 		break;
-	case DISPLAY:
+	default:
 		break;
 	}
 }
