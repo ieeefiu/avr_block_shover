@@ -25,6 +25,7 @@
 #include <avr/sleep.h>
 
 #include "USART.h"
+#include "i2c_master.h"
 #include "blockshover.h"
 
 void menu(void);

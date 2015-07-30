@@ -1,10 +1,6 @@
 #ifndef blockshover_h
 #define blockshover_h
 
-#include <avr/io.h>
-#include "i2c_master.h"
-#include "USART.h"
-
 // Addresses for reading and writing to the multiplexer and sensor
 #define MUX_WRITE 0b11100000
 #define MUX_READ 0b11100001
