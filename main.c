@@ -89,7 +89,7 @@ void shove(uint8_t col)
 
 	switch(col) {
 	default:
-		color = NONE;
+		color = RED;
 		break;
 	}
 }
