@@ -80,7 +80,7 @@ uint8_t i2c_read_nack(void)
 
 uint8_t i2c_transmit(uint8_t address, uint8_t* data, uint16_t length)
 {
-	if (i2c_start(address)) return 1;
+	if (i2c_start(address | I2C_WRITE)) return 1;
 	
 	for (uint16_t i = 0; i < length; i++)
 	{
@@ -94,7 +94,7 @@ uint8_t i2c_transmit(uint8_t address, uint8_t* data, uint16_t length)
 
 uint8_t i2c_receive(uint8_t address, uint8_t* data, uint16_t length)
 {
-	if (i2c_start(address)) return 1;
+	if (i2c_start(address | I2C_READ)) return 1;
 	
 	for (uint16_t i = 0; i < (length-1); i++)
 	{
