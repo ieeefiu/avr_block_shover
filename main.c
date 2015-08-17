@@ -68,9 +68,8 @@ int main(void)
 		mux_select(i);
 		sensor_init();
 	}
-	printString("~All sensors initialized~\n\n");
-
 	mux_select(0);
+	printString("~All sensors initialized~\n\n");
 	
 	while(1) {
 		menu();
@@ -126,6 +125,7 @@ int main(void)
 
 ISR(USART_RX_vect)
 {
+	cli();
 	received = UDR0;
 	switch(received) {
 	case 0x31:
@@ -144,6 +144,7 @@ ISR(USART_RX_vect)
 		color = NONE;
 		break;
 	}
+	sei();
 }
 
 void menu(void)
