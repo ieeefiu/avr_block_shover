@@ -14,11 +14,11 @@ MAIN = main.c
 
 ## If you've split your program into multiple .c / .h files, 
 ## include the additional source (in same directory) here 
-LOCAL_SOURCE = i2c_master.c USART.c blockshover.c
+LOCAL_SOURCE = blockshover.c
 
 ## Here you can link to one more directory (and multiple .c files)
-# EXTRA_SOURCE_DIR = ./AVR-Programming-Library/
-# EXTRA_SOURCE_FILES = 
+EXTRA_SOURCE_DIR = ./lib/
+EXTRA_SOURCE_FILES = i2c_master.c USART.c
 
 ##########------------------------------------------------------##########
 ##########                 Programmer Defaults                  ##########
