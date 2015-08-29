@@ -18,9 +18,13 @@ Description
 The block shover is controlled via USART commands. Upon booting, the shover steps through each sensor (the number of which is defined by the *SENSOR_NUMBER* constant in blockshover.h) and initializes them. It then idles until it receives a command over USART.
 
 Commands correspond to colors and are as follows:
+
 1 - Shove Red
+
 2 - Shove Green
+
 3 - Shove Yellow
+
 4 - Shove Blue
 
 A shove command wakes the microcontroller up, reads color data from each sensor, and shoves the blocks that correspond to the selected color. It continues doing this until all sensors report no matching blocks. Following the shove action, the microcontroller goes back to sleep.
