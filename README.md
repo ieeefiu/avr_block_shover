@@ -10,16 +10,18 @@ The PCA9547 is an eight-channel i2c multiplexer, used to switch between i2c devi
 
 The TCS34725 is an i2c CRGB color sensor. The address is fixed, hence the multiplexer. More info here: [TCS34725 datasheet](http://www.adafruit.com/datasheets/TCS34725.pdf)
 
+The ATmega328p is an 8-bit microcontroller made by Atmel. You probably know it as the heart of the Arduino UNO but it is *so much more*. They're really cheap and I have a ton so ask me and I'll give you one or three.
+
 Description
 -----------
 
 The block shover is controlled via USART commands. Upon booting, the shover steps through each sensor (the number of which is defined by the *SENSOR_NUMBER* constant in blockshover.h) and initializes them. It then idles until it receives a command over USART.
 
 Commands correspond to colors and are as follows:
-1. Shove Red
-2. Shove Green
-3. Shove Yellow
-4. Shove Blue
+1 - Shove Red
+2 - Shove Green
+3 - Shove Yellow
+4 - Shove Blue
 
 A shove command wakes the microcontroller up, reads color data from each sensor, and shoves the blocks that correspond to the selected color. It continues doing this until all sensors report no matching blocks. Following the shove action, the microcontroller goes back to sleep.
 
