@@ -42,6 +42,7 @@ What needs to be done
 - integrate with hardware
 - fine-tune color values
 - implement shoving action
+- insert to-do thing here
 
 How do I do this myself?
 ------------------------
