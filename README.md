@@ -33,7 +33,7 @@ What's done
 -----------
 
 - communication
-- sensor reading
+- multiple sensor reading
 - control via serial
 
 What needs to be done
