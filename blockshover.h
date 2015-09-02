@@ -29,7 +29,4 @@ void sensor_printvalues(uint16_t* values);
 // populates the values array with crgb data
 void sensor_get(uint8_t channel, uint16_t* values);
 
-// populates the sensor array with color values
-void check_colors(uint8_t channel, uint16_t* values, uint8_t* sensors);
-
 #endif
