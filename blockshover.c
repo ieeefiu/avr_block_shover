@@ -78,3 +78,16 @@ void sensor_get(uint8_t channel, uint16_t* values)
 	}
 	i2c_stop();
 }
+
+void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors)
+{
+	if(values[0] > 5000) {
+		if(values[1] > values[3]) {
+			sensors[channel] = RED;
+		}
+		else if(values[1] < values[3]) {
+			sensors[channel] = GREEN;
+		}
+	}
+	else sensors[channel] = NONE;
+}

@@ -28,16 +28,9 @@
 #include "i2c_master.h"
 #include "blockshover.h"
 
-// for test purposes only
-#define GREEN_0 PB3
-#define RED_0 PB2
-#define GREEN_1 PB1
-#define RED_1 PB0
-//
-
 void menu(void);
 
-enum colors {NONE, RED, GREEN, YELLOW, BLUE} color;
+volatile uint8_t shovecolor = 0;
 
 void shove(uint8_t col, uint8_t* values);
 
@@ -77,18 +70,7 @@ int main(void)
 		for(i = 0; i < SENSOR_NUMBER; i++) {
 			sensor_get(i, values);
 			sensor_printvalues(values);
-			
-			// for testing purposes only
-			if(values[0] > 5000) {
-				if(values[1] > values[3]) {
-					sensors[i] = RED;
-				}
-				else if(values[1] < values[3]) {
-					sensors[i] = GREEN;
-				}
-			}
-			else sensors[i] = NONE;
-			//
+			check_color(i, values, sensors);
 		}
 
 		// part of that same dumb test
@@ -129,19 +111,19 @@ ISR(USART_RX_vect)
 	received = UDR0;
 	switch(received) {
 	case 0x31:
-		color = RED;
+		shovecolor = RED;
 		break;
 	case 0x32:
-		color = GREEN;
+		shovecolor = GREEN;
 		break;
 	case 0x33:
-		color = YELLOW;
+		shovecolor = YELLOW;
 		break;
 	case 0x34:
-		color = BLUE;
+		shovecolor = BLUE;
 		break;
 	default:
-		color = NONE;
+		shovecolor = NONE;
 		break;
 	}
 	sei();

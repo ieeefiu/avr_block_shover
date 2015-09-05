@@ -8,8 +8,16 @@
 #define SENSOR_WRITE 0b01010010
 #define SENSOR_READ 0b01010011
 
+// Pin values for shovers
+#define RAIL_1 PB0
+#define RAIL_2 PB1
+#define RAIL_3 PB2
+
+// Colors
+enum colors {NONE, RED, GREEN, YELLOW, BLUE};
+
 // Number of sensors attached to the multiplexer. Supports up to eight
-#define SENSOR_NUMBER 2
+#define SENSOR_NUMBER 3
 
 // Initializes multiplexer and sets the initial channel to 0
 void mux_init(void);
@@ -28,5 +36,8 @@ void sensor_printvalues(uint16_t* values);
 
 // populates the values array with crgb data
 void sensor_get(uint8_t channel, uint16_t* values);
+
+// checks colors, sets value for a sensor
+void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors);
 
 #endif
