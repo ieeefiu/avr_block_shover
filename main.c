@@ -72,35 +72,6 @@ int main(void)
 			sensor_printvalues(values);
 			check_color(i, values, sensors);
 		}
-
-		// part of that same dumb test
-		if(sensors[0] == GREEN) {
-			PORTB |= (1 << GREEN_0);
-			PORTB &= ~(1 << RED_0);
-		}
-		else if(sensors[0] == RED) {
-			PORTB |= (1 << RED_0);
-			PORTB &= ~(1 << GREEN_0);
-		}
-		else {
-			PORTB &= ~(1 << GREEN_0);
-			PORTB &= ~(1 << RED_0);
-		}
-		
-		if(sensors[1] == GREEN) {
-			PORTB |= (1 << GREEN_1);
-			PORTB &= ~(1 << RED_1);
-		}
-		else if(sensors[1] == RED) {
-			PORTB |= (1 << RED_1);
-			PORTB &= ~(1 << GREEN_1);
-		}
-		else {
-			PORTB &= ~(1 << GREEN_1);
-			PORTB &= ~(1 << RED_1);
-		}
-		// boy that sure was some dumb bullshit
-		
 		shove(color, sensors);
 	}
 }
