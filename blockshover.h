@@ -41,6 +41,6 @@ void sensor_get(uint8_t channel, uint16_t* values);
 void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors);
 
 // shoves blocks of specified color
-void shove(uint8_t color, uint8_t* sensors);
+uint8_t shove(uint8_t color, uint8_t* sensors);
 
 #endif
