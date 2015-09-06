@@ -75,7 +75,9 @@ int main(void)
 			sensor_printvalues(values);
 			check_color(i, values, sensors);
 		}
-		while(shovecolor)
+		while(shovecolor) {
+			shove(shovecolor, sensors);
+		}
 	}
 }
 
