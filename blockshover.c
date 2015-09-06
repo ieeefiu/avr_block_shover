@@ -92,7 +92,7 @@ void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors)
 	else sensors[channel] = NONE;
 }
 
-uint8_t shove(uint8_t color, uint8_t* sensors)
+void shove(uint8_t color, uint8_t* sensors)
 {
 	switch(color) {
 	case RED:
@@ -114,5 +114,4 @@ uint8_t shove(uint8_t color, uint8_t* sensors)
 		break;
 	}
 
-	return NONE;
 }

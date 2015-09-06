@@ -23,6 +23,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
+#include <util/delay.h>
 
 #include "USART.h"
 #include "i2c_master.h"
@@ -69,15 +70,14 @@ int main(void)
 	
 	while(1) {
 		menu();
+		shovecolor = NONE;
 		sleep_mode();
 		for(i = 0; i < SENSOR_NUMBER; i++) {
 			sensor_get(i, values);
 			sensor_printvalues(values);
 			check_color(i, values, sensors);
 		}
-		while(shovecolor) {
-			shove(shovecolor, sensors);
-		}
+		shove(shovecolor, sensors);
 	}
 }
 
