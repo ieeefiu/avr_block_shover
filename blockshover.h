@@ -9,9 +9,8 @@
 #define SENSOR_READ 0b01010011
 
 // Pin values for shovers
-#define RAIL_1 PB0
-#define RAIL_2 PB1
-#define RAIL_3 PB2
+#define RAIL_1 PB1
+#define RAIL_2 PB2
 
 // Colors
 enum colors {NONE, RED, GREEN, YELLOW, BLUE};
