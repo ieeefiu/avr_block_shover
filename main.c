@@ -23,34 +23,31 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
+#include <util/delay.h>
 
 #include "USART.h"
 #include "i2c_master.h"
 #include "blockshover.h"
 
-// for test purposes only
-#define GREEN_0 PB3
-#define RED_0 PB2
-#define GREEN_1 PB1
-#define RED_1 PB0
-//
+// constants for servo controls
+#define PULSE_MIN 1000
+#define PULSE_MAX 2000
+#define PULSE_MID 1500
 
 void menu(void);
 
-enum colors {NONE, RED, GREEN, YELLOW, BLUE} color;
-
-void shove(uint8_t col, uint8_t* values);
-
+volatile uint8_t shovecolor = NONE;
 volatile uint8_t received;
+
+static inline void initTimer1Servo(void);
 
 int main(void)
 {
-	DDRB |= 0xFF;
-	
 	uint8_t i;
 	uint16_t values[4];
 	uint8_t sensors[SENSOR_NUMBER];
 	initUSART();
+	initTimer1Servo();
 	UCSR0B |= (1 << RXCIE0);
 	sei(); // enable interrupts
 	set_sleep_mode(SLEEP_MODE_IDLE);
@@ -66,6 +63,9 @@ int main(void)
 				"--------------------\n");
 	for (i = 0; i < SENSOR_NUMBER; i++) {
 		mux_select(i);
+		printString("Channel: ");
+		printByte(mux_get());
+		printString("\n");
 		sensor_init();
 	}
 	mux_select(0);
@@ -73,53 +73,17 @@ int main(void)
 	
 	while(1) {
 		menu();
+		shovecolor = NONE;
 		sleep_mode();
 		for(i = 0; i < SENSOR_NUMBER; i++) {
 			sensor_get(i, values);
+			printString("Channel: ");
+			printByte(mux_get());
+			printString("\n");
 			sensor_printvalues(values);
-			
-			// for testing purposes only
-			if(values[0] > 5000) {
-				if(values[1] > values[3]) {
-					sensors[i] = RED;
-				}
-				else if(values[1] < values[3]) {
-					sensors[i] = GREEN;
-				}
-			}
-			else sensors[i] = NONE;
-			//
+			check_color(i, values, sensors);
 		}
-
-		// part of that same dumb test
-		if(sensors[0] == GREEN) {
-			PORTB |= (1 << GREEN_0);
-			PORTB &= ~(1 << RED_0);
-		}
-		else if(sensors[0] == RED) {
-			PORTB |= (1 << RED_0);
-			PORTB &= ~(1 << GREEN_0);
-		}
-		else {
-			PORTB &= ~(1 << GREEN_0);
-			PORTB &= ~(1 << RED_0);
-		}
-		
-		if(sensors[1] == GREEN) {
-			PORTB |= (1 << GREEN_1);
-			PORTB &= ~(1 << RED_1);
-		}
-		else if(sensors[1] == RED) {
-			PORTB |= (1 << RED_1);
-			PORTB &= ~(1 << GREEN_1);
-		}
-		else {
-			PORTB &= ~(1 << GREEN_1);
-			PORTB &= ~(1 << RED_1);
-		}
-		// boy that sure was some dumb bullshit
-		
-		shove(color, sensors);
+		shove(shovecolor, sensors);
 	}
 }
 
@@ -129,19 +93,19 @@ ISR(USART_RX_vect)
 	received = UDR0;
 	switch(received) {
 	case 0x31:
-		color = RED;
+		shovecolor = RED;
 		break;
 	case 0x32:
-		color = GREEN;
+		shovecolor = GREEN;
 		break;
 	case 0x33:
-		color = YELLOW;
+		shovecolor = YELLOW;
 		break;
 	case 0x34:
-		color = BLUE;
+		shovecolor = BLUE;
 		break;
 	default:
-		color = NONE;
+		shovecolor = NONE;
 		break;
 	}
 	sei();
@@ -157,22 +121,13 @@ void menu(void)
 					"4. Shove Blue\n\n");
 }
 
-void shove(uint8_t col, uint8_t* sensors)
+static inline void initTimer1Servo(void)
 {
-	switch(col) {
-	case RED:
-		printString("shove red\n");
-		break;
-	case GREEN:
-		printString("shove green\n");
-		break;
-	case YELLOW:
-		printString("shove yellow\n");
-		break;
-	case BLUE:
-		printString("shove blue\n");
-		break;
-	default:
-		break;
-	}
+	// graciously borrowed from Make: AVR Programming
+	TCCR1A |= (1 << WGM11);
+	TCCR1B |= (1 << WGM12);
+	TCCR1B |= (1 << WGM13);
+	TCCR1B |= (1 << CS10);
+	TCCR1A |= (1 << COM1A1);
+	ICR1 = 20000;
 }

@@ -17,9 +17,6 @@ void mux_select(uint8_t channel)
 	i2c_start(MUX_WRITE);
 	i2c_write(0x08 | channel);
 	i2c_stop();
-	printString("Channel selected: ");
-	printByte(channel);
-	printString("\n");
 }
 
 uint8_t mux_get(void)
@@ -77,4 +74,40 @@ void sensor_get(uint8_t channel, uint16_t* values)
 		}
 	}
 	i2c_stop();
+}
+
+void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors)
+{
+	if(values[0] > 5000) {
+		if(values[1] > values[3]) {
+			sensors[channel] = RED;
+		}
+		else if(values[1] < values[3]) {
+			sensors[channel] = GREEN;
+		}
+	}
+	else sensors[channel] = NONE;
+}
+
+void shove(uint8_t color, uint8_t* sensors)
+{
+	switch(color) {
+	case RED:
+		printString("shoving red\n");
+		break;
+	case GREEN:
+		printString("shoving green\n");
+		break;
+	case YELLOW:
+		printString("shoving yellow\n");
+		break;
+	case BLUE:
+		printString("shoving blue\n");
+		break;
+	case NONE:
+		printString("shoving none\n");
+		break;
+	default:
+		break;
+	}
 }
