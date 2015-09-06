@@ -63,6 +63,9 @@ int main(void)
 				"--------------------\n");
 	for (i = 0; i < SENSOR_NUMBER; i++) {
 		mux_select(i);
+		printString("Channel: ");
+		printByte(mux_get());
+		printString("\n");
 		sensor_init();
 	}
 	mux_select(0);
@@ -74,6 +77,9 @@ int main(void)
 		sleep_mode();
 		for(i = 0; i < SENSOR_NUMBER; i++) {
 			sensor_get(i, values);
+			printString("Channel: ");
+			printByte(mux_get());
+			printString("\n");
 			sensor_printvalues(values);
 			check_color(i, values, sensors);
 		}
@@ -119,9 +125,9 @@ static inline void initTimer1Servo(void)
 {
 	// graciously borrowed from Make: AVR Programming
 	TCCR1A |= (1 << WGM11);
-	TCCR1B |= (1 << WGM12) | (1 << WGM13);
+	TCCR1B |= (1 << WGM12);
+	TCCR1B |= (1 << WGM13);
 	TCCR1B |= (1 << CS10);
-	ICR1 = 20000;
 	TCCR1A |= (1 << COM1A1);
-	DDRB |= 0x07;
+	ICR1 = 20000;
 }

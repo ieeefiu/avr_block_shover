@@ -17,9 +17,6 @@ void mux_select(uint8_t channel)
 	i2c_start(MUX_WRITE);
 	i2c_write(0x08 | channel);
 	i2c_stop();
-	printString("Channel selected: ");
-	printByte(channel);
-	printString("\n");
 }
 
 uint8_t mux_get(void)
