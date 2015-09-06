@@ -113,5 +113,4 @@ void shove(uint8_t color, uint8_t* sensors)
 	default:
 		break;
 	}
-
 }
