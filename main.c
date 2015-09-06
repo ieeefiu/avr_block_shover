@@ -28,22 +28,25 @@
 #include "i2c_master.h"
 #include "blockshover.h"
 
+// constants for servo controls
+#define PULSE_MIN 1000
+#define PULSE_MAX 2000
+#define PULSE_MID 1500
+
 void menu(void);
 
-volatile uint8_t shovecolor = 0;
-
-void shove(uint8_t col, uint8_t* values);
-
+volatile uint8_t shovecolor = NONE;
 volatile uint8_t received;
+
+static inline void initTimer1Servo(void);
 
 int main(void)
 {
-	DDRB |= 0xFF;
-	
 	uint8_t i;
 	uint16_t values[4];
 	uint8_t sensors[SENSOR_NUMBER];
 	initUSART();
+	initTimer1Servo();
 	UCSR0B |= (1 << RXCIE0);
 	sei(); // enable interrupts
 	set_sleep_mode(SLEEP_MODE_IDLE);
@@ -72,7 +75,7 @@ int main(void)
 			sensor_printvalues(values);
 			check_color(i, values, sensors);
 		}
-		shove(shovecolor, sensors);
+		while(shovecolor)
 	}
 }
 
@@ -110,22 +113,13 @@ void menu(void)
 					"4. Shove Blue\n\n");
 }
 
-void shove(uint8_t col, uint8_t* sensors)
+static inline void initTimer1Servo(void)
 {
-	switch(col) {
-	case RED:
-		printString("shove red\n");
-		break;
-	case GREEN:
-		printString("shove green\n");
-		break;
-	case YELLOW:
-		printString("shove yellow\n");
-		break;
-	case BLUE:
-		printString("shove blue\n");
-		break;
-	default:
-		break;
-	}
+	// graciously borrowed from Make: AVR Programming
+	TCCR1A |= (1 << WGM11);
+	TCCR1B |= (1 << WGM12) | (1 << WGM13);
+	TCCR1B |= (1 << CS10);
+	ICR1 = 20000;
+	TCCR1A |= (1 << COM1A1);
+	DDRB |= 0x07;
 }

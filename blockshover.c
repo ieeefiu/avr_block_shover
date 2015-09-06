@@ -91,3 +91,26 @@ void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors)
 	}
 	else sensors[channel] = NONE;
 }
+
+void shove(uint8_t color, uint8_t* sensors)
+{
+	switch(color) {
+	case RED:
+		printString("shoving red\n");
+		break;
+	case GREEN:
+		printString("shoving green\n");
+		break;
+	case YELLOW:
+		printString("shoving yellow\n");
+		break;
+	case BLUE:
+		printString("shoving blue\n");
+		break;
+	case NONE:
+		printString("shoving none\n");
+		break;
+	default:
+		break;
+	}
+}
