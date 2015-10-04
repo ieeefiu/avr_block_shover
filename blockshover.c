@@ -4,6 +4,7 @@
 #include "USART.h"
 #include "blockshover.h"
 
+
 void mux_init(void)
 {
 	i2c_start(MUX_WRITE);
