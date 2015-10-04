@@ -4,17 +4,6 @@
 #include "USART.h"
 #include "blockshover.h"
 
-static inline void initTimer1Servo(void)
-{
-	// graciously borrowed from Make: AVR Programming
-	TCCR1A |= (1 << WGM11);
-	TCCR1B |= (1 << WGM12);
-	TCCR1B |= (1 << WGM13);
-	TCCR1B |= (1 << CS10);
-	TCCR1A |= (1 << COM1A1);
-	ICR1 = 20000;
-}
-
 void mux_init(void)
 {
 	i2c_start(MUX_WRITE);

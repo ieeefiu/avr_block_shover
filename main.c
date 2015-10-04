@@ -36,16 +36,44 @@
 
 void menu(void);
 
+static inline void initTimer1Servo(void)
+{
+	// graciously borrowed from Make: AVR Programming
+	TCCR1A |= (1 << WGM11);
+	TCCR1B |= (1 << WGM12);
+	TCCR1B |= (1 << WGM13);
+	TCCR1B |= (1 << CS10);
+	TCCR1A |= (1 << COM1A1);
+	ICR1 = 20000;
+	DDRB |= (1 << PB1);
+}
+
 volatile uint8_t shovecolor = NONE;
 volatile uint8_t received;
 
-static inline void initTimer1Servo(void);
+static inline void showOff(void) {
+  printString("Center\r\n");
+  OCR1A = PULSE_MID;
+  _delay_ms(1500);
+  printString("Clockwise Max\r\n");
+  OCR1A = PULSE_MIN;
+  _delay_ms(1500);
+  printString("Counterclockwise Max\r\n");
+  OCR1A = PULSE_MAX;
+  _delay_ms(1500);
+  printString("Center\r\n");
+  OCR1A = PULSE_MID;
+  _delay_ms(1500);
+}
+
+
 
 int main(void)
 {
 	uint8_t i;
 	uint16_t values[4];
 	uint8_t sensors[SENSOR_NUMBER];
+	OCR1A = PULSE_MID;
 	initUSART();
 	initTimer1Servo();
 	UCSR0B |= (1 << RXCIE0);
@@ -119,15 +147,4 @@ void menu(void)
 					"2. Shove Green\n"
 					"3. Shove Yellow\n"
 					"4. Shove Blue\n\n");
-}
-
-static inline void initTimer1Servo(void)
-{
-	// graciously borrowed from Make: AVR Programming
-	TCCR1A |= (1 << WGM11);
-	TCCR1B |= (1 << WGM12);
-	TCCR1B |= (1 << WGM13);
-	TCCR1B |= (1 << CS10);
-	TCCR1A |= (1 << COM1A1);
-	ICR1 = 20000;
 }

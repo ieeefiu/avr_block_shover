@@ -11,12 +11,13 @@
 // Pin values for shovers
 #define RAIL_1 PB1
 #define RAIL_2 PB2
+#define RAIL_3 PB3
+
+// Number of sensors attached to the multiplexer. Supports up to eight
+#define SENSOR_NUMBER 1
 
 // Colors
 enum colors {NONE, RED, GREEN, YELLOW, BLUE};
-
-// Number of sensors attached to the multiplexer. Supports up to eight
-#define SENSOR_NUMBER 3
 
 // Initializes multiplexer and sets the initial channel to 0
 void mux_init(void);
