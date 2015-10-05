@@ -1,7 +1,7 @@
 AVR Block Shover
 ================
 
-A program for the ATmega328p for reading color data over multiple i2c color sensors.
+A program for the ATmega328p for reading color data over multiple i2c color sensors and using that data to shove blocks.
 
 Details
 -------
@@ -35,13 +35,15 @@ What's done
 - communication
 - multiple sensor reading
 - control via serial
+- detecting color values with sensor data
 
 What needs to be done
 ---------------------
 
 - integrate with hardware
-- fine-tune color values
 - implement shoving action
+- button controls for shoving
+- make arms work
 - insert to-do thing here
 
 How do I do this myself?

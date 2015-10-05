@@ -51,6 +51,7 @@ volatile uint8_t received;
 int main(void)
 {
 	uint8_t i;
+	
 	uint16_t values[4];
 	uint8_t sensors[SENSOR_NUMBER];
 	OCR1A = PULSE_MID;
