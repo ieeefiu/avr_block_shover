@@ -51,23 +51,6 @@ static inline void initTimer1Servo(void)
 volatile uint8_t shovecolor = NONE;
 volatile uint8_t received;
 
-static inline void showOff(void) {
-  printString("Center\r\n");
-  OCR1A = PULSE_MID;
-  _delay_ms(1500);
-  printString("Clockwise Max\r\n");
-  OCR1A = PULSE_MIN;
-  _delay_ms(1500);
-  printString("Counterclockwise Max\r\n");
-  OCR1A = PULSE_MAX;
-  _delay_ms(1500);
-  printString("Center\r\n");
-  OCR1A = PULSE_MID;
-  _delay_ms(1500);
-}
-
-
-
 int main(void)
 {
 	uint8_t i;
