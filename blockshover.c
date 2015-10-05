@@ -65,29 +65,47 @@ void sensor_get(uint8_t channel, uint16_t* values)
 	mux_select(channel);
 	i2c_start(SENSOR_READ);
 	for(i = 0; i < 4; i++) {
-		if (i < 3) {
-			values[i] = i2c_read_ack();
-			values[i] |= (i2c_read_ack() << 8);
-		}
-		else if (i == 3) {
-			values[i] = i2c_read_ack();
-			values[i] = (i2c_read_nack() << 8);
-		}
+		values[i] = i2c_read_ack();
+		values[i] |= (i2c_read_ack() << 8);
 	}
 	i2c_stop();
 }
 
 void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors)
 {
-	if(values[0] > 5000) {
-		if(values[1] > values[3]) {
+	if(values[0] > 25000)
+		sensors[channel] = YELLOW;
+	else if(values[0] > 4000) {
+		if(values[1] > 4000)
 			sensors[channel] = RED;
-		}
-		else if(values[1] < values[3]) {
+		else if(values[3] < values[1])
 			sensors[channel] = GREEN;
-		}
+		else sensors[channel] = BLUE;
 	}
 	else sensors[channel] = NONE;
+}
+
+void print_color(uint8_t channel, uint8_t* sensors)
+{
+	printString("Color: ");
+	switch(sensors[channel]) {
+	case RED:
+		printString("Red\n");
+		break;
+	case GREEN:
+		printString("Green\n");
+		break;
+	case YELLOW:
+		printString("Yellow\n");
+		break;
+	case BLUE:
+		printString("Blue\n");
+		break;
+	case NONE:
+	default:
+		printString("None\n");
+		break;
+	}
 }
 
 void shove(uint8_t color, uint8_t* sensors)

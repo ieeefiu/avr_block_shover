@@ -110,6 +110,8 @@ int main(void)
 			printString("\n");
 			sensor_printvalues(values);
 			check_color(i, values, sensors);
+			print_color(i, sensors);
+			
 		}
 		shove(shovecolor, sensors);
 	}

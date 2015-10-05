@@ -40,6 +40,9 @@ void sensor_get(uint8_t channel, uint16_t* values);
 // checks colors, sets value for a sensor
 void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors);
 
+// prints the color value set by check_color for a selected channel
+void print_color(uint8_t channel, uint8_t* sensors);
+
 // shoves blocks of specified color
 void shove(uint8_t color, uint8_t* sensors);
 
