@@ -8,10 +8,8 @@
 #define SENSOR_WRITE 0b01010010
 #define SENSOR_READ 0b01010011
 
-// Pin values for shovers
-#define RAIL_1 PB1
-#define RAIL_2 PB2
-#define RAIL_3 PB3
+#define SERVO_WRITE 0b10000000
+#define SERVO_READ 0b10000001
 
 // Number of sensors attached to the multiplexer. Supports up to eight
 #define SENSOR_NUMBER 1
@@ -36,6 +34,12 @@ void sensor_printvalues(uint16_t* values);
 
 // populates the values array with crgb data
 void sensor_get(uint8_t channel, uint16_t* values);
+
+// initialize pca9685
+void servo_init(void);
+
+// send a signal to a servo
+void servo_send(uint8_t channel, uint8_t pulse);
 
 // checks colors, sets value for a sensor
 void check_color(uint8_t channel, uint16_t* values, uint8_t* sensors);

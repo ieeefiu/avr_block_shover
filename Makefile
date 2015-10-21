@@ -26,9 +26,9 @@ EXTRA_SOURCE_FILES = i2c_master.c USART.c
 ##########        (Can override.  See bottom of file.)          ##########
 ##########------------------------------------------------------##########
 
-PROGRAMMER_TYPE = usbtiny
+PROGRAMMER_TYPE = dragon_isp
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = 	
+PROGRAMMER_ARGS = -P usb -B 10
 
 ##########------------------------------------------------------##########
 ##########                   Makefile Magic!                    ##########
