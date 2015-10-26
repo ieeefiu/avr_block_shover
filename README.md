@@ -51,7 +51,8 @@ How do I do this myself?
 
 If you would like to assist with this, please let me (Will) know. As of now, you will need the following to replicate what is currently available:
 
-- an AVR programming interface (I'm using the [USBtinyISP from Adafruit](http://www.adafruit.com/products/46) with [this kit](http://shop.evilmadscientist.com/tinykitlist/230) but I hear the [AVR Dragon](http://www.atmel.com/tools/AVRDRAGON.aspx) is good as well in addition to being official)
+- an AVR programming interface (I'm using the [AVR Dragon](http://www.atmel.com/tools/AVRDRAGON.aspx) which is the official programmer from Atmel. It's good and also cool and I like it. Previously I used the [USBtinyISP](http://www.adafruit.com/products/46) which is also good and cool but has fewer features.)
+- Optional: a dev board. I recommend the [ATmegaXX8 Mini Dev Kit](http://shop.evilmadscientist.com/tinykitlist/230), ZIF socket version, from Evil Mad Scientist. You'll also need some header pins and a capacitor, but those are cheap as heck. Alternative is to use a breadboard, but these dev boards are really nice to have around.
 - an ATmega328p (hit me up, I have approx. a billion of them)
 - a PCA9547 with header pins (they're surface mount, so get at me and I'll give you one that's breadboard ready)
 - one or more TCS34725 (using this neat protoboard version from adafruit [link](http://www.adafruit.com/products/1334))
